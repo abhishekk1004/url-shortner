@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Shorten Your Links. Track Everything.</h1>
+<p>Create short URLs, manage them, and track clicks easily.</p>
+
+<div style="margin-top:30px; padding:30px; border:1px solid #ddd; border-radius:8px;">
+    <h3>Paste your long URL here</h3>
+    <input placeholder="https://example.com" disabled>
+    <p style="color:gray;">Login required to create short URLs</p>
+
+    <a href="{% url 'login' %}">
+        <button>Login to Continue</button>
+    </a>
+</div>
+
+{% endblock %}

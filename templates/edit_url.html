@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Edit Short URL</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div style="margin-bottom: 12px;">
+        <label for="short_key">Short Key (Cannot be changed)</label>
+        <input type="text" id="short_key" value="{{ url.short_key }}" disabled style="width: 100%; padding: 8px; box-sizing: border-box; background-color: #f0f0f0;">
+    </div>
+
+    <div style="margin-bottom: 12px;">
+        <label for="url">Original URL</label>
+        <input type="url" id="url" name="url" value="{{ url.original_url }}" required style="width: 100%; padding: 8px; box-sizing: border-box;">
+    </div>
+
+    <div style="margin-bottom: 12px;">
+        <label>Created At: {{ url.created_at|date:"M d, Y H:i" }}</label>
+    </div>
+
+    <div style="margin-bottom: 12px;">
+        <label>Clicks: {{ url.clicks }}</label>
+    </div>
+
+    <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">Update</button>
+    <a href="{% url 'qr_code' url.id %}" style="padding: 10px 20px; background-color: #17a2b8; color: white; text-decoration: none; border-radius: 4px; display: inline-block; margin-right: 10px;">📱 View QR Code</a>
+    <a href="{% url 'dashboard' %}" style="padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">Cancel</a>
+</form>
+
+{% endblock %}

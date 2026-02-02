@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Hi {{ request.user.username }}, welcome to your dashboard 👋</h2>
+<p>Here are your shortened URLs:</p>
+
+<p>
+    <a href="{% url 'create' %}" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">+ Create New URL</a>
+</p>
+
+{% if urls %}
+    <table width="100%" border="1" cellpadding="10" style="margin-top: 15px;">
+        <tr>
+            <th>Short URL</th>
+            <th>Original URL</th>
+            <th>Clicks</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+        {% for url in urls %}
+        <tr>
+            <td>
+                <a href="/{{ url.short_key }}/" target="_blank">
+                    {{ request.get_host }}/{{ url.short_key }}
+                </a>
+            </td>
+            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ url.original_url }}</td>
+            <td>{{ url.clicks }}</td>
+            <td>{{ url.created_at|date:"M d, Y H:i" }}</td>
+            <td style="white-space: nowrap;">
+                <a href="{% url 'qr_code' url.id %}" style="color: #17a2b8; text-decoration: none;" title="View QR Code">📱 QR</a> | 
+                <a href="{% url 'edit' url.id %}" style="color: #007bff; text-decoration: none;">Edit</a> | 
+                <a href="{% url 'delete' url.id %}" style="color: #dc3545; text-decoration: none;" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No URLs yet. <a href="{% url 'create' %}">Create your first one</a> 🚀</p>
+{% endif %}
+
+{% endblock %}

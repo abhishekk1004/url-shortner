@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Create Short URL</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label>Long URL</label>
+    <input name="url" placeholder="https://example.com" required>
+
+    <button type="submit">Shorten URL</button>
+</form>
+
+{% endblock %}
