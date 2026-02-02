@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Account Settings</h2>
+
+<div style="max-width: 600px; margin: 0 auto;">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <div style="background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 15px; border: 1px solid #f5c6cb;">
+                    {{ message }}
+                </div>
+            {% elif message.tags == 'warning' %}
+                <div style="background-color: #fff3cd; color: #856404; padding: 12px; border-radius: 4px; margin-bottom: 15px; border: 1px solid #ffeeba;">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div style="background-color: #d4edda; color: #155724; padding: 12px; border-radius: 4px; margin-bottom: 15px; border: 1px solid #c3e6cb;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- User Profile Section -->
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <h3 style="margin-top: 0;">Profile Information</h3>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>Username:</strong> {{ request.user.username }}
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>Email:</strong> {{ request.user.email }}
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>Full Name:</strong> {{ profile.full_name }}
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>Phone:</strong> {{ profile.phone }}
+        </div>
+
+        <a href="{% url 'dashboard' %}" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">← Back to Dashboard</a>
+    </div>
+
+    <!-- 2FA Section -->
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
+        <h3 style="margin-top: 0;">Two-Factor Authentication (2FA)</h3>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>Status:</strong> 
+            {% if two_fa_enabled %}
+                <span style="color: #28a745; font-weight: bold;">✓ Enabled</span>
+            {% else %}
+                <span style="color: #dc3545; font-weight: bold;">✗ Disabled</span>
+            {% endif %}
+        </div>
+
+        <p style="color: #666; margin-bottom: 15px;">
+            Two-factor authentication adds an extra layer of security to your account. When enabled, you'll need to provide a code from your authenticator app when logging in.
+        </p>
+
+        {% if two_fa_enabled %}
+            <div style="background-color: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                <p style="margin: 0; color: #155724;">✓ Your account is protected with 2FA. You can disable it anytime below.</p>
+            </div>
+            
+            <a href="{% url 'disable_2fa' %}" style="padding: 10px 20px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">🔓 Disable 2FA</a>
+        {% else %}
+            <div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                <p style="margin: 0; color: #856404;">⚠️ Your account is not protected with 2FA. Enable it to secure your account.</p>
+            </div>
+            
+            <a href="{% url 'setup_2fa' %}" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">🔒 Enable 2FA</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

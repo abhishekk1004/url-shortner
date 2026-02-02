@@ -1,5 +1,8 @@
-Django==4.2
+Django==5.0.1
 djangorestframework
 djangorestframework-simplejwt
 psycopg2-binary
 python-dotenv
+qrcode[pil]
+Pillow
+pyotp

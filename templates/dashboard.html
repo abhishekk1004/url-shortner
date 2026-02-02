@@ -5,7 +5,8 @@
 <p>Here are your shortened URLs:</p>
 
 <p>
-    <a href="{% url 'create' %}" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">+ Create New URL</a>
+    <a href="{% url 'create' %}" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px; display: inline-block; margin-right: 10px;">+ Create New URL</a>
+    <a href="{% url 'settings' %}" style="padding: 10px 20px; background-color: #17a2b8; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">⚙️ Settings</a>
 </p>
 
 {% if urls %}

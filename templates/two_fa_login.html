@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>2FA Verification</h2>
+
+<div style="background-color: #f8f9fa; padding: 30px; border-radius: 8px; max-width: 400px; margin: 0 auto;">
+    <p>A 2FA code has been enabled on your account.</p>
+    <p>Enter the 6-digit code from your authenticator app:</p>
+
+    {% if error %}
+        <div style="background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 15px;">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            <label for="two_fa_code">6-Digit Code</label>
+            <input type="text" id="two_fa_code" name="two_fa_code" placeholder="000000" maxlength="6" pattern="[0-9]{6}" required style="width: 100%; padding: 10px; box-sizing: border-box; text-align: center; font-size: 18px; letter-spacing: 5px;">
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Verify</button>
+    </form>
+
+    <p style="margin-top: 20px; font-size: 12px; color: #666;">
+        Don't have your authenticator app? You can use one of your backup codes instead.
+    </p>
+</div>
+
+{% endblock %}
