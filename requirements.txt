@@ -6,3 +6,5 @@ python-dotenv
 qrcode[pil]
 Pillow
 pyotp
+dj-database-url
+gunicorn
