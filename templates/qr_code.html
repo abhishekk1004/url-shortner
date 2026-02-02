@@ -6,8 +6,7 @@
 <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
     <div style="margin-bottom: 15px;">
         <strong>Short URL:</strong> 
-        <a href="{{ short_url }}" target="_blank" style="color: #007bff;">{{ short_url }}</a>
-    </div>
+        <a href="{{ short_url }}" target="_blank" rel="noopener noreferrer" style="color: #007bff;">{{ short_url }}</a>    </div>
     
     <div style="margin-bottom: 15px;">
         <strong>Original URL:</strong> 
@@ -53,7 +52,7 @@
 
 <script>
 function copyShortURL() {
-    const url = "{{ short_url }}";
+    const url = "{{ short_url|escapejs }}";
     navigator.clipboard.writeText(url).then(function() {
         alert('Short URL copied to clipboard!');
     }, function(err) {
@@ -66,7 +65,7 @@ async function shareQRCode() {
     if (navigator.share) {
         try {
             // Convert base64 to blob
-            const base64Data = "{{ qr_code }}";
+            const base64Data = "{{ qr_code|escapejs }}";
             const byteCharacters = atob(base64Data);
             const byteNumbers = new Array(byteCharacters.length);
             for (let i = 0; i < byteCharacters.length; i++) {
@@ -74,7 +73,7 @@ async function shareQRCode() {
             }
             const byteArray = new Uint8Array(byteNumbers);
             const blob = new Blob([byteArray], {type: 'image/png'});
-            const file = new File([blob], 'qr_code_{{ url.short_key }}.png', {type: 'image/png'});
+            const file = new File([blob], 'qr_code_{{ url.short_key|escapejs }}.png', {type: 'image/png'});
             
             await navigator.share({
                 title: 'QR Code for Short URL',
@@ -83,8 +82,13 @@ async function shareQRCode() {
             });
         } catch (err) {
             // If sharing fails, copy URL instead
-            copyShortURL();
-            alert('Sharing not available. Short URL copied to clipboard instead!');
+            const url = "{{ short_url|escapejs }}";
+            navigator.clipboard.writeText(url).then(function() {
+                alert('Sharing failed. Short URL copied to clipboard instead!');
+            }, function(copyErr) {
+                alert('Sharing failed and could not copy to clipboard.');
+                console.error('Could not copy text: ', copyErr);
+            });
         }
     } else {
         // Fallback: copy URL to clipboard
