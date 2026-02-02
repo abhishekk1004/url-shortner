@@ -28,11 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG", "False") == "True"
-
-# ALLOWED_HOSTS configuration
-allowed_hosts_env = os.getenv("ALLOWED_HOSTS", "").strip()
-ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",") if host.strip()] if allowed_hosts_env else ["*"]
-
+ALLOWED_HOSTS = ["*"]
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 
 # Application definition
