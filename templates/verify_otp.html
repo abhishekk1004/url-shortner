@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4" style="color: #667eea;">Verify OTP & Reset Password</h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <p class="text-center text-muted mb-4">
+                        We've sent an OTP to <strong>{{ email }}</strong>
+                    </p>
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="otp" class="form-label fw-bold">Enter OTP (6 digits)</label>
+                            <input 
+                                type="text" 
+                                class="form-control form-control-lg text-center" 
+                                id="otp" 
+                                name="otp" 
+                                placeholder="000000"
+                                maxlength="6"
+                                pattern="[0-9]{6}"
+                                required
+                                style="font-size: 1.5rem; letter-spacing: 0.5rem;"
+                            >
+                            <small class="text-muted">OTP expires in 10 minutes</small>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="new_password" class="form-label fw-bold">New Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control form-control-lg" 
+                                id="new_password" 
+                                name="new_password" 
+                                placeholder="At least 8 characters"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="confirm_password" class="form-label fw-bold">Confirm Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control form-control-lg" 
+                                id="confirm_password" 
+                                name="confirm_password" 
+                                placeholder="Confirm your password"
+                                required
+                            >
+                        </div>
+                        
+                        <button type="submit" class="btn btn-lg w-100 text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                            Reset Password
+                        </button>
+                    </form>
+                    
+                    <hr class="my-4">
+                    <p class="text-center text-muted">
+                        Didn't receive OTP? <a href="{% url 'password_reset_otp_request' %}" style="color: #667eea; text-decoration: none;">Request again</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+</style>
+
+<script>
+    // Allow only numbers in OTP field
+    document.getElementById('otp').addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+    });
+</script>
+{% endblock %}

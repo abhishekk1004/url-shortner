@@ -1,26 +1,92 @@
 {% extends "base.html" %}
+{% load socialaccount %}
 {% block content %}
 
-<h2>Login</h2>
-
-<form method="post">
-    {% csrf_token %}
-    <label>Username</label>
-    <input name="username" required>
-
-    <label>Password</label>
-    <input type="password" name="password" required>
-
-    <div style="margin: 6px 0 14px;">
-        <a href="{% url 'password_reset' %}">Forgot password?</a>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4" style="color: #667eea;">Login</h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <!-- Social Login Buttons -->
+                    <div class="mb-4">
+                        <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger w-100 mb-2">
+                            Login with Google
+                        </a>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <span class="text-muted">or</span>
+                    </div>
+                    
+                    <!-- Traditional Login Form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-bold">Username or Email</label>
+                            <input 
+                                type="text" 
+                                class="form-control form-control-lg" 
+                                id="username" 
+                                name="username" 
+                                placeholder="Enter your username or email"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-bold">Password</label>
+                            <input 
+                                type="password" 
+                                class="form-control form-control-lg" 
+                                id="password" 
+                                name="password" 
+                                placeholder="Enter your password"
+                                required
+                            >
+                        </div>
+                        
+                        <div class="mb-4 text-end">
+                            <a href="{% url 'password_reset_otp_request' %}" style="color: #667eea; text-decoration: none;">
+                                Forgot password?
+                            </a>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-lg w-100 text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+                            Login
+                        </button>
+                    </form>
+                    
+                    <hr class="my-4">
+                    <p class="text-center text-muted">
+                        Don't have an account? <a href="{% url 'register' %}" style="color: #667eea; text-decoration: none;">Register here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <button type="submit">Login</button>
-</form>
-
-<p style="margin-top:15px;">
-    Don’t have an account?
-    <a href="{% url 'register' %}">Register</a>
-</p>
-
+<style>
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+</style>
 {% endblock %}

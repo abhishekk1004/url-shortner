@@ -67,6 +67,13 @@ def login_view(request):
             messages.error(request, "Username and password are required.")
             return render(request, "login.html")
 
+        
+        if username and "@" in username:
+            try:
+                username = User.objects.get(email=username).username
+            except User.DoesNotExist:
+                username = None
+
         user = authenticate(username=username, password=password)
         if user:
             try:
@@ -399,3 +406,90 @@ def settings_view(request):
         "profile": profile,
         "two_fa_enabled": profile.two_factor_enabled
     })
+
+# OTP-based Password Reset Views
+def password_reset_otp_request(request):
+    """Request OTP for password reset"""
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = User.objects.get(email=email)
+            # Generate 6-digit OTP
+            otp = str(random.randint(100000, 999999))
+            
+            # Save OTP to database
+            from .models import PasswordResetOTP
+            PasswordResetOTP.objects.create(user=user, otp=otp)
+            
+            # Send OTP via email
+            from django.core.mail import send_mail
+            subject = "Password Reset OTP - URL Shortener"
+            message = f"""
+            Hello {user.first_name or user.username},
+            
+            Your OTP for password reset is: {otp}
+            
+            This OTP will expire in 10 minutes.
+            
+            If you didn't request this, please ignore this email.
+            
+            Best regards,
+            URL Shortener Team
+            """
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+            
+            messages.success(request, "OTP sent to your email. Please check your inbox.")
+            return redirect("verify_otp", email=email)
+        except User.DoesNotExist:
+            messages.error(request, "No account found with this email")
+    
+    return render(request, "password_reset_otp.html")
+
+
+def verify_otp(request, email):
+    """Verify OTP and show password reset form"""
+    if request.method == "POST":
+        otp = request.POST.get("otp")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+        
+        try:
+            user = User.objects.get(email=email)
+            from .models import PasswordResetOTP
+            
+            # Get the latest OTP for this user
+            otp_record = PasswordResetOTP.objects.filter(user=user, is_used=False).latest('created_at')
+            
+            if not otp_record.is_valid():
+                messages.error(request, "OTP has expired. Please request a new one.")
+                return redirect("password_reset_otp_request")
+            
+            if otp_record.otp != otp:
+                messages.error(request, "Invalid OTP. Please try again.")
+                return render(request, "verify_otp.html", {"email": email})
+            
+            if new_password != confirm_password:
+                messages.error(request, "Passwords do not match.")
+                return render(request, "verify_otp.html", {"email": email})
+            
+            if len(new_password) < 8:
+                messages.error(request, "Password must be at least 8 characters long.")
+                return render(request, "verify_otp.html", {"email": email})
+            
+            # Update password and mark OTP as used
+            user.set_password(new_password)
+            user.save()
+            otp_record.is_used = True
+            otp_record.save()
+            
+            messages.success(request, "Password reset successfully. Please login with your new password.")
+            return redirect("login")
+        
+        except User.DoesNotExist:
+            messages.error(request, "User not found.")
+            return redirect("password_reset_otp_request")
+        except PasswordResetOTP.DoesNotExist:
+            messages.error(request, "No OTP found. Please request a new one.")
+            return redirect("password_reset_otp_request")
+    
+    return render(request, "verify_otp.html", {"email": email})

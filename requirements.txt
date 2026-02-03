@@ -9,3 +9,6 @@ pyotp
 dj-database-url
 gunicorn
 drf-yasg
+django-allauth
+requests
+cryptography
