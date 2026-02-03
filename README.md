@@ -1,53 +1,143 @@
-# URL Shortener Web Application
+# 🔗 Shortify - URL Shortener with 2FA
 
-A Django-based URL shortener web application with user authentication, URL management, and analytics.
+A modern, secure URL shortener application built with Django and Django REST Framework. Shorten long URLs, track clicks, generate QR codes, and secure your account with Two-Factor Authentication.
 
-## Features
+![Shortify](https://img.shields.io/badge/Django-5.0.1-green?style=for-the-badge&logo=django)
+![Python](https://img.shields.io/badge/Python-3.13-blue?style=for-the-badge&logo=python)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-### Core Requirements ✅
-- **User Authentication**: Register, login, logout functionality
-- **User Profile Management**: Full name, email, phone number storage
-- **URL Shortening**: Generate unique short keys for long URLs
-- **URL Redirection**: Short URLs redirect to original long URLs
-- **URL Management**: View, edit, and delete shortened URLs
-- **Analytics**: Click count tracking for each shortened URL
-- **Dashboard**: Personalized dashboard showing user's shortened URLs with creation dates
-- **Admin Panel**: Complete user and URL management interface
-- **Responsive UI**: Clean and intuitive interface using Django templates
+---
 
-### Additional Features
-- **Unique Short Key Generation**: Base62-like encoding using alphanumeric characters
-- **User-Specific URLs**: Each user can only see and manage their own URLs
-- **Admin Statistics**: Track registered users and their URL shortening activities
-- **Edit URLs**: Modify original URLs without changing the short key
-- **Delete URLs**: Remove unwanted shortened URLs
-- **Click Analytics**: See how many times each URL has been clicked
-- **API Support**: RESTful API for URL creation, management, and user registration
-- **QR Code Generation**: Generate, view, download, and share QR codes for shortened URLs ✅
+## ✨ Features
 
-### Bonus Features Implemented ✅
-- **QR Code Generation**: Fully implemented with download and share functionality
-- **QR Code Download**: Download QR codes as PNG files
-- **QR Code Sharing**: Share QR codes via Web Share API (mobile devices)
-- **Two-Factor Authentication (2FA)**: Fully implemented with TOTP and backup codes ✅
-  - Scan QR code with authenticator app (Google Authenticator, Microsoft Authenticator, Authy, 1Password)
-  - 10 backup codes for account recovery
-  - Optional 2FA setup for each user
-  - Vercel deployment compatible
-- Expiration time field in model (ready for UI implementation)
-- Custom short URL selection (ready for implementation)
+### 🔐 User Authentication ✅
+- **Secure Registration & Login** - Create an account with email verification
+- **Two-Factor Authentication (2FA)** - TOTP-based security for enhanced protection
+- **Backup Codes** - Recovery codes in case you lose access to your 2FA device
+- **Session Management** - Secure JWT-based authentication for API access
+- **User Profile** - Store full name, email, phone number
 
-## Requirements
+### 🌐 URL Shortening ✅
+- **Create Short URLs** - Convert long URLs into short, shareable links
+- **Custom Short Keys** - Auto-generated 6-character alphanumeric codes
+- **URL Management** - View, edit, and delete your shortened URLs
+- **Click Analytics** - Track how many times each URL has been clicked
+- **Expiration Control** - Set optional expiration dates for links
 
-- Python 3.8+
-- Django 4.2+
-- Django REST Framework
-- qrcode[pil] (for QR code generation)
-- Pillow (for image processing)
-- pyotp (for 2FA TOTP codes)
-- sqlite3 (included with Python)
+### 📊 Analytics & Tracking ✅
+- **Click Counter** - Real-time view of how many times your links are accessed
+- **Created Date** - Timestamp for when each URL was shortened
+- **Dashboard** - Organized view of all your shortened URLs
 
-## Installation & Setup
+### 🎨 QR Code Generation ✅
+- **QR Code Support** - Generate QR codes for any shortened URL
+- **QR Download** - Download QR codes as PNG files
+- **QR Sharing** - Share QR codes via mobile share API
+- **HTTPS Support** - Automatic HTTPS detection in production
+
+### 🔌 API Documentation ✅
+- **Swagger UI** - Interactive API documentation at `/swagger/`
+- **ReDoc** - Alternative API documentation at `/redoc/`
+- **Full REST API** - Complete CRUD operations for URLs
+- **Token Authentication** - JWT-based API authentication
+
+### 🎯 User Experience ✅
+- **Modern UI** - Clean, responsive design with gradient styling
+- **Toast Notifications** - Real-time error and success popup messages
+- **Mobile Responsive** - Works perfectly on desktop, tablet, and mobile
+- **Logo Link** - Click the logo to return to home from any page
+- **Attractive Design** - Modern dark theme with smooth animations
+
+
+## 🚀 Tech Stack
+
+### Backend
+- **Django 5.0.1** - Modern web framework
+- **Django REST Framework** - Powerful API development
+- **PostgreSQL** - Robust database
+- **drf-yasg** - Swagger/OpenAPI auto-documentation
+- **PyOTP** - Two-Factor Authentication (TOTP)
+- **QRCode** - QR code generation with Pillow
+- **Gunicorn** - WSGI application server
+
+### Frontend
+- **HTML5** - Semantic markup
+- **CSS3** - Modern styling with gradients and animations
+- **JavaScript** - Interactive toast notifications
+- **Django Templates** - Server-side rendering
+
+### Deployment
+- **Render** - Application hosting
+- **Railway** - Database hosting (PostgreSQL)
+
+---
+
+## 📋 Installation & Setup
+
+### Prerequisites
+- Python 3.13+
+- PostgreSQL 12+
+- Git
+- pip (Python package manager)
+
+### Local Development
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/abhishekk1004/url-shortner.git
+   cd url-shortner
+   ```
+
+2. **Create virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Create `.env` file in root directory**
+   ```env
+   SECRET_KEY=your-secret-key-here
+   DEBUG=True
+   ALLOWED_HOSTS=127.0.0.1,localhost
+   ENVIRONMENT=development
+   DB_NAME=urlshortener
+   DB_USER=postgres
+   DB_PASSWORD=your-password
+   DB_HOST=localhost
+   DB_PORT=5432
+   USE_HTTPS=False
+   ```
+
+5. **Run migrations**
+   ```bash
+   python manage.py migrate
+   ```
+
+6. **Create superuser (admin)**
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+7. **Start development server**
+   ```bash
+   python manage.py runserver
+   ```
+
+   Access at: `http://localhost:8000`
+
+---
+
+## 🌐 Live Deployment
+
+The application is live and running on Render:
+- **Main URL**: https://url-shortner-9m1t.onrender.com
+- **Swagger API Docs**: https://url-shortner-9m1t.onrender.com/swagger/
+- **ReDoc API Docs**: https://url-shortner-9m1t.onrender.com/redoc/
 
 ### 1. Clone the Repository
 ```bash
@@ -57,291 +147,327 @@ cd url
 
 ### 2. Create Virtual Environment
 ```bash
-python -m venv venv
+
+### Deploy to Render
+
+1. **Push code to GitHub**
+   ```bash
+   git add .
+   git commit -m "Deploy to Render"
+   git push origin main
+   ```
+
+2. **Create PostgreSQL database**
+   - Use Railway.app or Render's PostgreSQL
+   - Get the database URL
+
+3. **Create new service on Render**
+   - Go to https://render.com
+   - Click "New+" → "Web Service"
+   - Connect your GitHub repository
+   - Enter Name: `url-shortner`
+
+4. **Configure Build & Start Commands**
+   - **Build Command**:
+     ```
+     pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
+     ```
+   - **Start Command**:
+     ```
+     gunicorn dev.wsgi:application
+     ```
+
+5. **Set Environment Variables**
+   - `DB_URL` - PostgreSQL connection string
+   - `SECRET_KEY` - Django secret key
+   - `DEBUG` - False
+   - `ENVIRONMENT` - production
+   - `USE_HTTPS` - True
+
+6. **Deploy and enjoy!** 🎉
+
+---
+
+## 📚 API Documentation
+
+### Access API Docs
+- **Swagger UI**: Visit `/swagger/` on your deployed app
+- **ReDoc**: Visit `/redoc/` on your deployed app
+
+### Key API Endpoints
+
+#### Authentication
 ```
-
-### 3. Activate Virtual Environment
-
-**On Windows:**
-```bash
-venv\Scripts\activate
-```
-
-**On macOS/Linux:**
-```bash
-source venv/bin/activate
-```
-
-### 4. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 5. Apply Migrations
-```bash
-python manage.py migrate
-```
-
-### 6. Create Superuser (Admin Account)
-```bash
-python manage.py createsuperuser
-```
-
-### 7. Run Development Server
-```bash
-python manage.py runserver
-```
-
-The application will be available at `http://127.0.0.1:8000/`
-
-## Usage
-
-### Web Interface
-
-1. **Home Page**: `http://127.0.0.1:8000/`
-   - Register a new account or login
-
-2. **Register**: `http://127.0.0.1:8000/register/`
-   - Full Name
-   - Username
-   - Email
-   - Phone Number
-   - Password
-
-3. **Login**: `http://127.0.0.1:8000/login/`
-   - Username and Password
-
-4. **Dashboard**: `http://127.0.0.1:8000/dashboard/`
-   - View all your shortened URLs
-   - See click counts and creation dates
-   - Access QR codes for each URL
-   - Edit or delete URLs
-
-5. **Create Short URL**: `http://127.0.0.1:8000/create/`
-   - Paste your long URL
-   - Get a shortened version
-
-6. **QR Code Features**: 
-   - Click "📱 QR" in dashboard to view QR code
-   - Download QR code as PNG file
-   - Share QR code via mobile devices (Web Share API)
-   - Copy short URL to clipboard
-   - Print QR code directly
-
-7. **Security & Settings**: `http://127.0.0.1:8000/settings/`
-   - Enable/disable two-factor authentication (2FA)
-   - View account information
-   - Manage security settings
-
-8. **Two-Factor Authentication (2FA)**:
-   - Setup: Scan QR code with Google/Microsoft Authenticator
-   - Login: Enter 6-digit code after password
-   - Backup: 10 recovery codes provided
-   - Compatible with all major authenticator apps
-
-9. **Admin Panel**: `http://127.0.0.1:8000/admin/`
-   - View all registered users with full details
-   - View all shortened URLs across the platform
-   - Monitor user statistics and activity
-
-### API Endpoints
-
-#### Register User
-```
+POST /api/token/
+GET  /api/token/refresh/
 POST /api/register/
-Body: {
-  "username": "user123",
-  "password": "pass123"
-}
 ```
 
-#### Create Short URL
+#### URL Management
 ```
-POST /api/urls/
-Headers: Authorization: Token <your-token>
-Body: {
-  "url": "https://example.com/very/long/url"
-}
-```
-
-#### List User's URLs
-```
-GET /api/urls/
-Headers: Authorization: Token <your-token>
+GET    /api/urls/           # List all your URLs
+POST   /api/urls/           # Create new short URL
+GET    /api/urls/{id}/      # Get URL details
+PUT    /api/urls/{id}/      # Update URL
+DELETE /api/urls/{id}/      # Delete URL
 ```
 
-#### Get URL Details
+#### Web Pages
 ```
-GET /api/urls/<id>/
-Headers: Authorization: Token <your-token>
-```
-
-#### Update URL
-```
-PUT /api/urls/<id>/
-Headers: Authorization: Token <your-token>
-Body: {
-  "url": "https://example.com/new/url"
-}
+GET /{short-key}/           # Redirect to original URL
+GET /{id}/qr-code/          # Get QR code for URL
 ```
 
-#### Delete URL
-```
-DELETE /api/urls/<id>/
-Headers: Authorization: Token <your-token>
-```
+---
 
-## Project Structure
+## 🔐 Two-Factor Authentication (2FA)
+
+### Enabling 2FA
+1. Login to your account
+2. Go to **Settings**
+3. Click **"Enable Two-Factor Authentication"**
+4. Scan the QR code with your authenticator:
+   - Google Authenticator
+   - Microsoft Authenticator
+   - Authy
+   - Any TOTP-compatible app
+5. Enter the 6-digit code to confirm
+6. **Save your backup codes in a safe place!**
+
+### Using 2FA During Login
+1. Enter username and password
+2. When prompted, enter the 6-digit code from your authenticator app
+3. If you lose access to your device, use one of your backup codes
+
+### Backup Codes
+- 10 codes provided during 2FA setup
+- Each code can be used once
+- Save them in a password manager
+- Cannot be recovered if lost!
+
+---
+
+## 🎨 User Interface Highlights
+
+### Modern Design Features
+- **Dark Navigation Bar** - Sleek gradient background with shadow
+- **Responsive Layout** - Adapts to any screen size
+- **Toast Notifications** - Auto-dismissing popup messages
+- **Clean Forms** - Intuitive input fields and buttons
+- **Logo Branding** - Click logo to go home from anywhere
+- **Color-Coded Messages**:
+  - 🟢 Green - Success messages
+  - 🔴 Red - Error messages
+  - 🟡 Yellow - Warning messages
+
+---
+
+## 📊 Project Structure
 
 ```
-url/
-├── manage.py
-├── requirements.txt
-├── README.md
+url-shortner/
 ├── dev/
-│   ├── settings.py
-│   ├── urls.py
-│   ├── wsgi.py
-│   └── asgi.py
+│   ├── settings.py          # Django configuration
+│   ├── urls.py              # URL routing with Swagger
+│   ├── wsgi.py              # WSGI application
+│   └── asgi.py              # ASGI application
 ├── shortener/
-│   ├── models.py         # User, UserProfile, ShortURL models
-│   ├── views.py          # Web and API views
-│   ├── urls.py           # URL routing
-│   ├── admin.py          # Admin configuration
-│   ├── serializers.py    # DRF serializers
-│   └── migrations/       # Database migrations
-└── templates/
-    ├── base.html         # Base template
-    ├── home.html         # Home page
-    ├── register.html     # Registration page
-    ├── login.html        # Login page
-    ├── dashboard.html    # Dashboard with URL list
-    ├── create_url.html   # Create short URL page
-    ├── edit_url.html     # Edit URL page
-    └── qr_code.html      # QR code display and download page
+│   ├── models.py            # Database models
+│   ├── views.py             # Web and API views
+│   ├── serializers.py       # DRF serializers
+│   ├── urls.py              # App URL routing
+│   ├── admin.py             # Django admin config
+│   └── migrations/          # Database migrations
+├── templates/
+│   ├── base.html            # Base template with navbar
+│   ├── home.html            # Home page
+│   ├── login.html           # Login with error toast
+│   ├── register.html        # Registration page
+│   ├── dashboard.html       # User dashboard with URLs
+│   ├── create_url.html      # Create URL form
+│   ├── edit_url.html        # Edit URL form
+│   ├── qr_code.html         # QR code display
+│   ├── settings.html        # User settings
+│   ├── two_fa_setup.html    # 2FA setup wizard
+│   ├── two_fa_login.html    # 2FA login verification
+│   ├── two_fa_disable.html  # Disable 2FA
+│   └── two_fa_backup_codes.html  # Backup codes view
+├── requirements.txt         # Python dependencies
+├── manage.py                # Django management script
+└── README.md                # This file
 ```
 
-## Database Models
+---
 
-### User (Django built-in)
-- username
+## 🗄️ Database Schema
+
+### User (Django Built-in)
+- id (PK)
+- username (unique)
 - email
-- password
-- is_staff, is_superuser
+- password (hashed)
+- first_name, last_name
+- is_active, is_staff, is_superuser
+- date_joined
 
-### UserProfile
-- user (OneToOne with User)
+### UserProfile (Custom)
+- id (PK)
+- user (FK to User, OneToOne)
 - full_name
 - phone
+- two_factor_enabled (boolean)
+- two_factor_secret (encrypted TOTP key)
+- backup_codes (JSON array)
+- created_at, updated_at
 
-### ShortURL
-- user (ForeignKey to User)
+### ShortURL (Custom)
+- id (PK)
+- user (FK to User)
 - original_url
-- short_key (unique)
+- short_key (unique, 6 chars)
 - clicks (default: 0)
 - created_at
 - expires_at (optional)
 
-## Key Features Explained
+---
 
-### Unique Short Key Generation
-```python
-def generate_short_code(length=6):
-    return "".join(random.choices(string.ascii_letters + string.digits, k=length))
-```
-Generates random alphanumeric codes for each URL shortening request.
+## 🔒 Security Highlights
 
-### URL Redirection
-When a user visits a short URL (e.g., `/abc123/`), the system:
-1. Finds the ShortURL entry with that short_key
-2. Increments the click counter
-3. Redirects to the original URL
+- **CSRF Protection** - Django middleware protects against CSRF attacks
+- **SQL Injection Prevention** - Django ORM uses parameterized queries
+- **XSS Protection** - Template auto-escaping enabled
+- **Secure Passwords** - PBKDF2 hashing with random salt
+- **2FA Support** - TOTP-based multi-factor authentication
+- **JWT Tokens** - Secure API authentication
+- **HTTPS** - Automatic HTTPS in production
+- **User Isolation** - Users can only access their own URLs
+- **Admin Panel** - Protected by login and superuser status
 
-### Authentication & Authorization
-- All URL management routes require login (@login_required)
-- Users can only see/edit/delete their own URLs
-- Admin panel accessible only to superusers
+---
 
-### QR Code Generation
-The application generates QR codes for shortened URLs with the following features:
-- **High-quality QR codes**: Uses the `qrcode` library with PIL support
-- **Base64 embedding**: QR codes are embedded in HTML for instant display
-- **Download capability**: Users can download QR codes as PNG files
-- **Share functionality**: Mobile devices can share QR codes using Web Share API
-- **Copy URL**: One-click copy of shortened URL to clipboard
-- **Print-friendly**: QR code page is optimized for printing
+## 🚀 Performance Optimizations
 
-## Testing the Application
+- **Database Indexing** - Indexed `short_key` for O(1) lookups
+- **Query Optimization** - Minimal database queries with `.select_related()`
+- **Static Files** - Served efficiently with CDN in production
+- **Template Caching** - Django template caching enabled
+- **Gunicorn Workers** - Multiple workers for concurrency
 
-1. **Create Account**: Register with test credentials
-2. **Create Short URL**: Submit a long URL
-3. **Verify Short URL**: Click on the shortened URL and verify redirect
-4. **Generate QR Code**: Click "📱 QR" to view the QR code
-5. **Download QR Code**: Save the QR code as a PNG image
-6. **Share QR Code**: Use mobile share feature or copy URL
-7. **Track Analytics**: Check click count increases
-8. **Edit URL**: Modify the original URL
-9. **Delete URL**: Remove a URL
-10. **Admin Panel**: View all users and URLs
+---
 
-## Admin Panel Features
+## 📈 Statistics & Monitoring
 
-- View all registered users with:
-  - Username
-  - Email
-  - Full Name
-  - Phone Number
-  - Account Creation Date
-  - Staff Status
+The application tracks:
+- Number of registered users
+- Total shortened URLs created
+- Total clicks across all URLs
+- Creation timestamps for analytics
+- User activity in admin panel
 
-- View all shortened URLs with:
-  - Short Key
-  - Original URL
-  - Owner (User)
-  - Click Count
-  - Creation Date
-  - Search and filter capabilities
+---
 
-## Future Enhancements
+## 🐛 Troubleshooting
 
-1. ~~**QR Code Generation**: Generate QR codes for each shortened URL~~ ✅ **IMPLEMENTED**
-2. **Custom Short URLs**: Allow users to choose custom short keys
-3. **URL Expiration**: Set expiration times for URLs
-4. **Advanced Analytics**: Geographic data, referrer tracking, device info
-5. **Bulk URL Shortening**: Import and shorten multiple URLs at once
-6. **URL Sharing**: Share shortened URLs with access control
-7. **API Rate Limiting**: Limit API requests per user
-8. **QR Code Customization**: Custom colors, logos, and styles for QR codes
-
-## Troubleshooting
-
-### Issue: "No Such Table" Error
-**Solution**: Run migrations
-```bash
-python manage.py migrate
-```
-
-### Issue: Static Files Not Loading
-**Solution**: Collect static files
-```bash
-python manage.py collectstatic
-```
-
-### Issue: Port Already in Use
-**Solution**: Use different port
+### Port Already in Use
 ```bash
 python manage.py runserver 8001
 ```
 
-## Vercel Deployment Guide
+### Database Connection Issues
+Check your `.env` file for correct credentials:
+- `DB_HOST` - Database hostname
+- `DB_PORT` - Database port (usually 5432)
+- `DB_USER` - Database user
+- `DB_PASSWORD` - Database password
 
-### Prerequisites
-1. Create a Vercel account at https://vercel.com
-2. Install Vercel CLI: `npm install -g vercel`
-3. Have your project in a Git repository (GitHub, GitLab, etc.)
+### 2FA Not Working
+- Ensure your device time is synchronized
+- Check authenticator app is working correctly
+- Use backup codes if TOTP doesn't work
 
-### Step 1: Create vercel.json
+### Static Files Not Loading
+```bash
+python manage.py collectstatic --noinput
+```
 
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see details in the repository.
+
+---
+
+## 👤 Author
+
+**Abhishek Kumar**
+- GitHub: [@abhishekk1004](https://github.com/abhishekk1004)
+- Project: [url-shortner](https://github.com/abhishekk1004/url-shortner)
+
+---
+
+## 🙏 Acknowledgments
+
+- Django & Django REST Framework teams
+- PyOTP for TOTP implementation
+- QRCode library for QR generation
+- Render & Railway for hosting support
+
+---
+
+## 📞 Support & Contact
+
+For issues, questions, or feedback:
+1. Open an issue on GitHub
+2. Create a discussion
+3. Check documentation at `/swagger/` or `/redoc/`
+
+---
+
+## 🎯 Roadmap
+
+### Completed ✅
+- [x] User authentication & registration
+- [x] URL shortening
+- [x] QR code generation & download
+- [x] Two-factor authentication (2FA)
+- [x] Click analytics
+- [x] API documentation (Swagger)
+- [x] Modern UI with toast notifications
+- [x] Render deployment
+
+### Upcoming 🚀
+- [ ] Custom domain support
+- [ ] Advanced analytics dashboard
+- [ ] URL password protection
+- [ ] Bulk URL import/export
+- [ ] Browser extension
+- [ ] Mobile app
+- [ ] Social integration
+- [ ] Webhooks for click notifications
+
+---
+
+## ⭐ Show Your Support
+
+If you find this project helpful, please consider giving it a star ⭐ on GitHub!
+
+---
+
+**Made with ❤️ by Abhishek Kumar**
+
+Last Updated: February 3, 2026
 Create a `vercel.json` file in your project root:
 
 ```json
