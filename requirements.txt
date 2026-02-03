@@ -8,3 +8,4 @@ Pillow
 pyotp
 dj-database-url
 gunicorn
+drf-yasg

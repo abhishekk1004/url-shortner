@@ -63,6 +63,10 @@ def login_view(request):
         password = request.POST.get("password")
         two_fa_code = request.POST.get("two_fa_code")
 
+        if not username or not password:
+            messages.error(request, "Username and password are required.")
+            return render(request, "login.html")
+
         user = authenticate(username=username, password=password)
         if user:
             try:
@@ -108,6 +112,9 @@ def login_view(request):
             except UserProfile.DoesNotExist:
                 login(request, user)
                 return redirect("dashboard")
+        else:
+            messages.error(request, "Invalid username or password.")
+            return render(request, "login.html")
 
     return render(request, "login.html")
 

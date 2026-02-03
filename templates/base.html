@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Shortener</title>    <style>
+    <title>URL Shortener</title>
+    <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Inter", Arial, sans-serif;
             margin: 0;
-            background: #f4f6f8;
+            background: #f3f4f6;
+            color: #111827;
         }
         nav {
-            background: #111827;
+            background: linear-gradient(90deg, #111827 0%, #1f2937 100%);
             color: white;
-            padding: 15px 40px;
+            padding: 16px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 10px 25px rgba(17, 24, 39, 0.3);
         }
         nav a {
             color: white;
@@ -24,8 +27,23 @@
             font-weight: bold;
         }
         .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             font-size: 22px;
-            font-weight: bold;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+        .logo-icon {
+            display: inline-flex;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            align-items: center;
+            justify-content: center;
+            background: #2563eb;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+            font-size: 18px;
         }
         .container {
             max-width: 900px;
@@ -33,6 +51,7 @@
             background: white;
             padding: 30px;
             border-radius: 8px;
+            box-shadow: 0 18px 30px rgba(15, 23, 42, 0.08);
         }
         button {
             background: #2563eb;
@@ -47,12 +66,50 @@
             padding: 10px;
             margin: 8px 0 15px;
         }
+        .toast-container {
+            position: fixed;
+            top: 90px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 9999;
+        }
+        .toast {
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #111827;
+            background: #fff;
+            box-shadow: 0 12px 30px rgba(17, 24, 39, 0.15);
+            border-left: 4px solid #2563eb;
+            min-width: 240px;
+            animation: fadeIn 0.3s ease;
+        }
+        .toast.error {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        .toast.success {
+            border-left-color: #10b981;
+            background: #ecfdf5;
+        }
+        .toast.warning {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">🔗 Shortify</div>
+    <a class="logo" href="{% url 'home' %}">
+        <span class="logo-icon">🔗</span>
+        <span>Shortify</span>
+    </a>
     <div>
         {% if user.is_authenticated %}
             <a href="{% url 'dashboard' %}">Dashboard</a>
@@ -67,9 +124,27 @@
     </div>
 </nav>
 
+<div class="toast-container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="toast {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+
 <div class="container">
     {% block content %}{% endblock %}
 </div>
+
+<script>
+    window.setTimeout(() => {
+        document.querySelectorAll('.toast').forEach((toast) => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-6px)';
+            setTimeout(() => toast.remove(), 300);
+        });
+    }, 4000);
+</script>
 
 </body>
 </html>
